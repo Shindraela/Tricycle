@@ -1,0 +1,1 @@
+{"name":"astuces","base":"PersistedModel","idInjection":true,"options":{"validateUpsert":true},"properties":{"name":{"type":"string"},"text":{"type":"string"},"category":{"type":"string"}},"validations":[],"relations":{},"acls":[],"methods":{}}
