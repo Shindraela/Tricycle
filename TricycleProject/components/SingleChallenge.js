@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, Alert } from 'react-native';
 import { Title, Caption, Paragraph, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listChallenges } from '../reducer';
@@ -35,7 +35,7 @@ class SingleChallenge extends React.Component {
 		));
 	}
 
-	updateChallengeStatus = async () => {
+	_updateChallengeStatus = async () => {
 		try {
 			// return axios.post('http://192.168.56.1:3000/api/missions')
 			return null;
@@ -44,17 +44,22 @@ class SingleChallenge extends React.Component {
 		}
 	};
 
+	_showAlert = () => {
+		// console.log('this.props :', this.props);
+		Alert.alert(
+			'Mission',
+			'Votre mission a été accompli avec succès !',
+			[ { text: 'OK', onPress: () => this._updateChallengeStatus() } ],
+			{ cancelable: false }
+		);
+	};
+
 	render() {
 		return (
 			<ScrollView style={[ styles.container ]}>
 				<Card style={styles.card}>{this.theChallenge()}</Card>
 
-				<Button
-					mode="contained"
-					icon="check"
-					onPress={() => this.updateChallengeStatus()}
-					style={styles.button}
-				>
+				<Button mode="contained" icon="check" onPress={this._showAlert} style={styles.button}>
 					Valider la mission
 				</Button>
 			</ScrollView>
