@@ -1,48 +1,48 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { Title, Caption, Paragraph, Card } from 'react-native-paper';
+import React from 'react';
+import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
+import { List } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
 
-class HoursList extends Component {
-	static navigationOptions = {
-		title: 'Hours'
+class HoursList extends React.Component {
+	static navigationOptions = ({ navigation }) => {
+		return {
+			title: navigation.getParam('otherParam')
+		};
 	};
 
 	componentDidMount() {
 		this.props.listHours();
 	}
 
-	// renderItem = ({ item }) => (
-	// 	<View style={styles.item}>
-	// 		<Text>{item.num_arrondissement}</Text>
-	// 	</View>
-	// );
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
 
-	renderHours() {
+	hoursList() {
 		const { hours } = this.props;
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
+		console.log('otherParam :', otherParam);
 
 		return hours.map((hour, index) => (
-			<Card.Content key={index}>
-				<Title>{hour.num_arrondissement} arrondissement</Title>
-				<Paragraph>{hour.horaire_poub_jaune}</Paragraph>
-				<Paragraph>{hour.horaire_poub_verte}</Paragraph>
-				<Paragraph>{hour.horaire_poub_blanche}</Paragraph>
-			</Card.Content>
+			<List.Item
+				key={index}
+				right={(props) => <List.Icon {...props} icon="arrow-forward" />}
+				title={hour.num_arrondissement}
+				onPress={() =>
+					this.props.navigation.navigate('SingleHour', {
+						otherParam: hour.num_arrondissement
+					})}
+			/>
 		));
 	}
 
-	// render() {
-	// 	const { hours } = this.props;
-	// 	return <FlatList styles={styles.container} data={hours} renderItem={this.renderItem} />;
-	// }
-
 	render() {
 		return (
-			<ScrollView style={[ styles.container ]}>
-				<Card style={styles.card}>{this.renderHours()}</Card>
+			<ScrollView style={styles.container}>
+				<List.Section>{this.hoursList()}</List.Section>
 			</ScrollView>
 		);
 	}
@@ -51,13 +51,11 @@ class HoursList extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
-	},
-	card: {
-		margin: 5
 	}
 });
 
 const mapStateToProps = (state) => {
+	console.log('state :', state);
 	let storedRepositories = state.hours.map((hour) => ({ key: hour.id, ...hour }));
 	return {
 		hours: storedRepositories

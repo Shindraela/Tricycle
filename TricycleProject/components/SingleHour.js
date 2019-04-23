@@ -2,11 +2,10 @@ import React from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, AsyncStorage } from 'react-native';
 import { Title, Caption, Paragraph, Card } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { listTips } from '../reducer';
-import Favorites from '../components/Favorites';
+import { listHours } from '../reducer';
 import { getFav } from '../helpers';
 
-class SingleTips extends React.Component {
+class SingleHour extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
 			title: navigation.getParam('otherParam')
@@ -14,7 +13,7 @@ class SingleTips extends React.Component {
 	};
 
 	componentDidMount() {
-		this.props.listTips();
+		this.props.listHours();
 	}
 
 	constructor(props) {
@@ -22,16 +21,17 @@ class SingleTips extends React.Component {
 		this.state = {};
 	}
 
-	theTip() {
-		const { tips } = this.props;
+	theHour() {
+		const { hours } = this.props;
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
 
-		return tips.filter((tip) => tip.name == otherParam).map((tip, index) => (
+		return hours.filter((hour) => hour.num_arrondissement == otherParam).map((hour, index) => (
 			<Card.Content key={index}>
-				<Title>{tip.name}</Title>
-				<Caption>{tip.category}</Caption>
-				<Paragraph>{tip.text}</Paragraph>
+				<Title>{hour.num_arrondissement} arrondissement</Title>
+				<Paragraph>{hour.horaire_poub_jaune}</Paragraph>
+				<Paragraph>{hour.horaire_poub_verte}</Paragraph>
+				<Paragraph>{hour.horaire_poub_blanche}</Paragraph>
 			</Card.Content>
 		));
 	}
@@ -54,7 +54,7 @@ class SingleTips extends React.Component {
 	render() {
 		return (
 			<ScrollView style={[ styles.container ]}>
-				<Card style={styles.card}>{this.theTip()}</Card>
+				<Card style={styles.card}>{this.theHour()}</Card>
 
 				<TouchableOpacity onPress={() => this.addFavory('slt')}>
 					<Text>Ajouter aux favoris</Text>
@@ -74,16 +74,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-	let storedRepositories = state.tips.map((tip) => ({ key: tip.id, ...tip }));
+	let storedRepositories = state.hours.map((tip) => ({ key: hour.id, ...hour }));
 	return {
-		tips: storedRepositories
+		hours: storedRepositories
 	};
 };
 
 const mapDispatchToProps = {
-	listTips
+	listHours
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleTips);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleHour);
 
 // export default withTheme(SingleTips);

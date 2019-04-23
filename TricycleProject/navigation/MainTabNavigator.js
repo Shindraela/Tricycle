@@ -5,6 +5,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Appbar } from 'react-native-paper';
 import TabBarIcon from '../components/TabBarIcon';
 import HoursList from '../components/HoursList';
+import SingleHour from '../components/SingleHour';
 import Spots from '../components/Spots';
 import SpotModal from '../components/SpotModal';
 import Search from '../components/Search';
@@ -16,42 +17,10 @@ import Challenges from '../components/Challenges';
 import ChallengesList from '../components/ChallengesList';
 import SingleChallenge from '../components/SingleChallenge';
 
-const examples = {
-	tabBarIcon: TabBarIcon,
-	hoursList: HoursList,
-	spots: Spots,
-	search: Search,
-	tips: Tips,
-	TipsList: TipsList,
-	singleTips: SingleTips,
-	challenges: Challenges,
-	favorites: Favorites
-};
-
-const routes = Object.keys(examples).map((id) => ({ id, item: examples[id] })).reduce((acc, { id, item }) => {
-	const Comp = item;
-	const Screen = (props) => <Comp {...props} />;
-
-	Screen.navigationOptions = (props) => ({
-		header: (
-			<Appbar.Header>
-				<Appbar.BackAction onPress={() => props.navigation.goBack()} />
-				<Appbar.Content title={Comp.title} />
-			</Appbar.Header>
-		),
-		/* $FlowFixMe */
-		...(typeof Comp.navigationOptions === 'function' ? Comp.navigationOptions(props) : Comp.navigationOptions)
-	});
-
-	return {
-		...acc,
-		[id]: { screen: Screen }
-	};
-}, {});
-
 const SearchStack = createStackNavigator({
 	Search: Search,
 	HoursList: HoursList,
+	SingleHour: SingleHour,
 	Spots: Spots,
 	SpotModal: SpotModal
 });
