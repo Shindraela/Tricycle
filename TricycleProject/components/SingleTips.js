@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, TouchableOpacity, Text, AsyncStorage } from 're
 import { Title, Caption, Paragraph, Card } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listTips } from '../reducer';
-import Favorites from '../components/Favorites';
 import { getFav } from '../helpers';
 
 class SingleTips extends React.Component {

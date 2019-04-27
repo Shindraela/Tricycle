@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
@@ -22,9 +22,6 @@ class HoursList extends React.Component {
 
 	hoursList() {
 		const { hours } = this.props;
-		const { navigation } = this.props;
-		const otherParam = navigation.getParam('otherParam');
-		console.log('otherParam :', otherParam);
 
 		return hours.map((hour, index) => (
 			<List.Item
@@ -33,7 +30,7 @@ class HoursList extends React.Component {
 				title={hour.num_arrondissement}
 				onPress={() =>
 					this.props.navigation.navigate('SingleHour', {
-						otherParam: hour.num_arrondissement
+						otherParam: hour.num_arrondissement.toString()
 					})}
 			/>
 		));
@@ -55,7 +52,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-	console.log('state :', state);
 	let storedRepositories = state.hours.map((hour) => ({ key: hour.id, ...hour }));
 	return {
 		hours: storedRepositories

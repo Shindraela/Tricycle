@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, AsyncStorage } from 'react-native';
-import { Title, Caption, Paragraph, Card } from 'react-native-paper';
+import { Title, Paragraph, Card } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
-import { getFav } from '../helpers';
 
 class SingleHour extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -36,28 +35,13 @@ class SingleHour extends React.Component {
 		));
 	}
 
-	addFavory = async (favoryAdded) => {
-		const favorites = (await getFav()) || [];
-		try {
-			console.log('Vincent', favorites);
-
-			favorites.push(favoryAdded);
-			// met à jour la valeur de "favorites" en local
-			await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
-			const bruh = await AsyncStorage.getItem('favorites');
-		} catch (error) {
-			// Error retrieving data
-			console.log(error);
-		}
-	};
-
 	render() {
 		return (
-			<ScrollView style={[ styles.container ]}>
+			<ScrollView style={styles.container}>
 				<Card style={styles.card}>{this.theHour()}</Card>
 
-				<TouchableOpacity onPress={() => this.addFavory('slt')}>
-					<Text>Ajouter aux favoris</Text>
+				<TouchableOpacity style={styles.button} onPress={() => {}}>
+					<Text>Etre notifié</Text>
 				</TouchableOpacity>
 			</ScrollView>
 		);
@@ -70,11 +54,16 @@ const styles = StyleSheet.create({
 	},
 	card: {
 		margin: 5
+	},
+	button: {
+		alignItems: 'center',
+		backgroundColor: '#DDDDDD',
+		padding: 10
 	}
 });
 
 const mapStateToProps = (state) => {
-	let storedRepositories = state.hours.map((tip) => ({ key: hour.id, ...hour }));
+	let storedRepositories = state.hours.map((hour) => ({ key: hour.id, ...hour }));
 	return {
 		hours: storedRepositories
 	};
