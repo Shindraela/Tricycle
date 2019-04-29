@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listTips } from '../reducer';
@@ -39,9 +39,6 @@ class TipsList extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
-		const otherParam = navigation.getParam('otherParam');
-
 		return (
 			<ScrollView style={styles.container}>
 				<List.Section>{this.tipsList()}</List.Section>

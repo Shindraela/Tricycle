@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, TouchableOpacity, Text, AsyncStorage } from 're
 import { Title, Caption, Paragraph, Card } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listTips } from '../reducer';
-import { getFav } from '../helpers';
 
 class SingleTips extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -35,29 +34,10 @@ class SingleTips extends React.Component {
 		));
 	}
 
-	addFavory = async (favoryAdded) => {
-		const favorites = (await getFav()) || [];
-		try {
-			console.log('Vincent', favorites);
-
-			favorites.push(favoryAdded);
-			// met à jour la valeur de "favorites" en local
-			await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
-			const bruh = await AsyncStorage.getItem('favorites');
-		} catch (error) {
-			// Error retrieving data
-			console.log(error);
-		}
-	};
-
 	render() {
 		return (
 			<ScrollView style={[ styles.container ]}>
 				<Card style={styles.card}>{this.theTip()}</Card>
-
-				<TouchableOpacity onPress={() => this.addFavory('slt')}>
-					<Text>Ajouter aux favoris</Text>
-				</TouchableOpacity>
 			</ScrollView>
 		);
 	}

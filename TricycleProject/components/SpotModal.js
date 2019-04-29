@@ -9,15 +9,20 @@ class SpotModal extends React.Component {
 		this.state = {};
 	}
 
-	addFavory = async (favoryAdded) => {
+	addFromFavoriteSpots = async (favoryAdded) => {
 		const favorites = (await getFav()) || [];
-		try {
-			newFavorites = JSON.parse(favorites);
-			newFavorites.push(favoryAdded);
+		// console.log('favorites :', favorites);
 
-			// met à jour la valeur de "favorites" en local
-			await AsyncStorage.setItem('favorites', JSON.stringify(newFavorites));
-			const bruh = await AsyncStorage.getItem('favorites');
+		try {
+			// Put data in users phone
+			if (favorites.length == 0) {
+				favorites.push(favoryAdded);
+				await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+			} else {
+				newFavorites = JSON.parse(favorites);
+				newFavorites.push(favoryAdded);
+				await AsyncStorage.setItem('favorites', JSON.stringify(newFavorites));
+			}
 		} catch (error) {
 			// Error retrieving data
 			console.log(error);
@@ -45,7 +50,7 @@ class SpotModal extends React.Component {
 						<Button
 							mode="contained"
 							icon={require('../assets/heart.png')}
-							onPress={() => this.addFavory('cc')}
+							onPress={() => this.addFromFavoriteSpots(dataCurrentMarker)}
 							style={styles.button}
 						>
 							Mettre en favori

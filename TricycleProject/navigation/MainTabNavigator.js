@@ -9,7 +9,8 @@ import SingleHour from '../components/SingleHour';
 import Spots from '../components/Spots';
 import SpotModal from '../components/SpotModal';
 import Search from '../components/Search';
-import Favorites from '../components/Favorites';
+import FavoritesList from '../components/FavoritesList';
+import SingleFavorite from '../components/SingleFavorite';
 import Tips from '../components/Tips';
 import TipsList from '../components/TipsList';
 import SingleTips from '../components/SingleTips';
@@ -47,7 +48,8 @@ TipsStack.navigationOptions = {
 };
 
 const FavoritesStack = createStackNavigator({
-	Favorites: Favorites
+	FavoritesList: FavoritesList,
+	SingleFavorite: SingleFavorite
 });
 
 FavoritesStack.navigationOptions = {

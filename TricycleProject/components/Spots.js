@@ -19,7 +19,6 @@ class Spots extends React.Component {
 			errorMessage: null,
 			latitude: null,
 			longitude: null,
-			errorMessage: null,
 			markers: [],
 			spotData: null,
 			code_postal: '75012',
