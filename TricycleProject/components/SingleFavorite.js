@@ -41,33 +41,17 @@ class SingleFavorite extends React.Component {
 		}
 	};
 
-	// removeFromFavoriteSpots = async () => {
-	// 	const { favorites } = this.state;
-	// 	// console.log('this.state :', this.state.favorites[1].adresse);
-
-	// 	const favoriteSpotKey = this.state.favorites[1].adresse;
-
-	// 	this.setState({
-	// 		favoriteSpotKey
-	// 	});
-	// 	// console.log('favoriteSpotKey :', favoriteSpotKey);
-
-	// 	try {
-	// 		await AsyncStorage.removeItem(favoriteSpotKey);
-	// 		return true;
-	// 	} catch (exception) {
-	// 		return false;
-	// 	}
-	// };
-
 	removeFromFavoriteSpots = async () => {
+		const { favorites } = this.state;
 		const { navigation } = this.props;
 		const spotToRemove = navigation.getParam('otherParam');
 
+		// Get the name spot to remove
 		this.setState({
 			spotToRemove
 		});
 
+		// Method for
 		AsyncStorage.getAllKeys().then(async (keys) =>
 			AsyncStorage.multiGet(keys).then(async (result) => {
 				// console.log('result :', result);
@@ -77,22 +61,31 @@ class SingleFavorite extends React.Component {
 					let parsedReq = JSON.parse(req[1]);
 
 					parsedReq.forEach(async (item) => {
-						// console.log('item :', item);
 						// console.log('item.adresse :', item.adresse);
 						// console.log('spotToRemove :', spotToRemove);
 
 						// Remove item where adresse is equal to the spotToRemove param
 						if (JSON.stringify(item.adresse) == JSON.stringify(spotToRemove)) {
 							// console.log('item :', item);
-							// Stringify item to remove
-							let stringifiedItem = JSON.stringify(item);
 
 							try {
-								// console.log('remove OK');
-								// await AsyncStorage.removeItem('favorites');
-								await AsyncStorage.removeItem(stringifiedItem);
-								const value = await AsyncStorage.getItem('favorites');
-								this.setState({ favoriteSpotKey: value });
+								// Retrieve indexOf item where adresse is equal to item.adresse
+								const index = favorites
+									.map(function(elm) {
+										return elm.adresse;
+									})
+									.indexOf(item.adresse);
+
+								// console.log('index :', index);
+
+								// Then remove it from the favorites array
+								if (index > -1) {
+									favorites.splice(index, 1);
+									// console.log('favorites :', favorites);
+								}
+
+								// Finally, set the spliced favorite in local storage
+								await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
 							} catch (exception) {
 								console.log(exception);
 							}
