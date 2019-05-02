@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, AsyncStorage } from 'react-native';
-import { Title, Paragraph, Card } from 'react-native-paper';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Title, Paragraph, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
+import { Constants, Permissions, Notifications } from 'expo';
 
 class SingleHour extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -11,13 +12,13 @@ class SingleHour extends React.Component {
 		};
 	};
 
-	componentDidMount() {
-		this.props.listHours();
-	}
-
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			title: 'Hello World',
+			body: 'Say something!',
+			notifications: []
+		};
 	}
 
 	theHour() {
@@ -35,14 +36,81 @@ class SingleHour extends React.Component {
 		));
 	}
 
+	sendPushNotification(title = this.state.title, body = this.state.body) {
+		const localNotification = {
+			title: title,
+			body: body
+		};
+
+		const schedulingOptions = {
+			// time: (new Date()).getTime() + Number(e.nativeEvent.text),
+			repeat: 'minute'
+		};
+
+		// Notifications show only when app is not active.
+		// (ie. another app being used or device's screen is locked)
+		Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions).then((response) => {
+			notificationId = response;
+
+			this.setState({
+				notificationId
+			});
+			console.log('notificationId :', this.state.notificationId);
+		});
+	}
+
+	cancelPushNotification() {
+		const { notificationId } = this.state;
+		console.log('REMOVE this.state.notificationId :', this.state.notificationId);
+		Notifications.cancelScheduledNotificationAsync(notificationId);
+	}
+
+	handleNotification() {
+		console.log('ok! got your notif');
+	}
+
+	async componentDidMount() {
+		this.props.listHours();
+
+		// We need to ask for Notification permissions for ios devices
+		let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+
+		if (Constants.isDevice && result.status === 'granted') {
+			console.log('Notification permissions granted.');
+		}
+
+		// If we want to do something with the notification when the app
+		// is active, we need to listen to notification events and
+		// handle them in a callback
+		Notifications.addListener(this.handleNotification);
+
+		Notifications.cancelAllScheduledNotificationsAsync();
+	}
+
 	render() {
+		const { notificationId } = this.state;
+
 		return (
 			<ScrollView style={styles.container}>
 				<Card style={styles.card}>{this.theHour()}</Card>
 
-				<TouchableOpacity style={styles.button} onPress={() => {}}>
-					<Text>Etre notifié</Text>
-				</TouchableOpacity>
+				<Button
+					mode="contained"
+					icon="favorite"
+					onPress={() => this.sendPushNotification()}
+					style={styles.button}
+				>
+					Etre notifié
+				</Button>
+
+				<Button
+					mode="contained"
+					icon="favorite"
+					onPress={() => this.cancelPushNotification(notificationId)}
+					style={styles.button}
+				>
+					Ne plus être notifié
+				</Button>
 			</ScrollView>
 		);
 	}
@@ -56,9 +124,8 @@ const styles = StyleSheet.create({
 		margin: 5
 	},
 	button: {
-		alignItems: 'center',
-		backgroundColor: '#DDDDDD',
-		padding: 10
+		padding: 5,
+		margin: 20
 	}
 });
 
