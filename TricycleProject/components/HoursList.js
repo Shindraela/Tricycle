@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, AsyncStorage } from 'react-native';
 import { List } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
+import { getNotif } from '../helpers';
 
 class HoursList extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -11,14 +12,36 @@ class HoursList extends React.Component {
 		};
 	};
 
-	componentDidMount() {
-		this.props.listHours();
-	}
-
 	constructor(props) {
 		super(props);
-		this.state = {};
+
+		this.state = {
+			notifications: []
+		};
 	}
+
+	componentDidMount() {
+		this.props.listHours();
+		this.fetchNotifications();
+	}
+
+	fetchNotifications = async () => {
+		try {
+			const notifications = await getNotif();
+
+			if (notifications !== null) {
+				parsedNotifications = JSON.parse(notifications);
+
+				this.setState({
+					notifications: parsedNotifications
+				});
+			}
+			console.log('hourslist fetch notifications :', notifications);
+		} catch (error) {
+			// Error retrieving data
+			console.log(error);
+		}
+	};
 
 	hoursList() {
 		const { hours } = this.props;

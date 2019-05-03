@@ -51,7 +51,7 @@ class SingleFavorite extends React.Component {
 			spotToRemove
 		});
 
-		// Method for
+		// Method for update favorites array
 		AsyncStorage.getAllKeys().then(async (keys) =>
 			AsyncStorage.multiGet(keys).then(async (result) => {
 				// console.log('result :', result);
