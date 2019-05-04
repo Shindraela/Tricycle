@@ -45,7 +45,7 @@ class SingleHour extends React.Component {
 		// handle them in a callback
 		Notifications.addListener(this.handleNotification);
 
-		Notifications.cancelAllScheduledNotificationsAsync();
+		// Notifications.cancelAllScheduledNotificationsAsync();
 	}
 
 	theHour() {
@@ -121,15 +121,53 @@ class SingleHour extends React.Component {
 
 	cancelPushNotification() {
 		const { notifications } = this.state;
-		console.log('REMOVE notifications :', notifications);
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
 
-		notifications
-			.filter((notif) => notif.otherParam == otherParam)
-			.map((notif, index) => Notifications.cancelScheduledNotificationAsync(notif));
+		// Method for update notifications array
+		AsyncStorage.getAllKeys().then(async (keys) =>
+			AsyncStorage.multiGet(keys).then(async (result) => {
+				// console.log('result :', result);
 
-		// TODO : add remove notif from AsyncStorage
+				result.map(async (req) => {
+					// console.log('req :', JSON.parse(req[1]));
+					let parsedReq = JSON.parse(req[1]);
+
+					parsedReq.forEach(async (item) => {
+						// console.log('item.otherParam :', item.otherParam);
+						// console.log('spotToRemove :', spotToRemove);
+
+						// Remove item where notif is equal to the notifToRemove param
+						if (JSON.stringify(item.otherParam) == JSON.stringify(otherParam)) {
+							// console.log('item :', item);
+
+							try {
+								// Retrieve indexOf item where otherParam is equal to item.otherParam
+								const index = notifications
+									.map(function(elm) {
+										return elm.otherParam;
+									})
+									.indexOf(item.otherParam);
+
+								// console.log('index :', index);
+
+								// Then remove it from the notifications array
+								if (index > -1) {
+									notifications.splice(index, 1);
+									// console.log('notifications :', notifications);
+								}
+
+								// Finally, set the spliced favorite in local storage
+								console.log('SET notifications :', JSON.stringify(notifications));
+								await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
+							} catch (exception) {
+								console.log(exception);
+							}
+						}
+					});
+				});
+			})
+		);
 	}
 
 	handleNotification() {
