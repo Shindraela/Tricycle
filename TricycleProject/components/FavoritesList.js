@@ -5,7 +5,7 @@ import { getFav } from '../helpers';
 
 class FavoritesList extends React.Component {
 	static navigationOptions = {
-		title: 'Favorites'
+		title: 'Points de tri favoris'
 	};
 
 	constructor() {

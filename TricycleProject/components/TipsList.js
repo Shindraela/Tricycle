@@ -7,7 +7,7 @@ import { listTips } from '../reducer';
 class TipsList extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
-			title: navigation.getParam('otherParam')
+			title: 'Astuces ' + navigation.getParam('otherParam')
 		};
 	};
 

@@ -75,7 +75,7 @@ class SingleHour extends React.Component {
 					notifications: parsedNotifications
 				});
 			}
-			console.log('fetch notifications :', notifications);
+			// console.log('fetch notifications :', notifications);
 		} catch (error) {
 			// Error retrieving data
 			console.log(error);
@@ -84,7 +84,6 @@ class SingleHour extends React.Component {
 
 	sendPushNotification = async (title = this.state.title, body = this.state.body) => {
 		const { notifications } = this.state;
-		console.log('notifications :', notifications);
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
 
@@ -107,10 +106,10 @@ class SingleHour extends React.Component {
 					this.setState({
 						notifications
 					});
-					console.log('notifications :', notifications);
+					// console.log('notifications :', notifications);
 				})
 				.finally(async () => {
-					console.log('notifications stringify :', JSON.stringify(notifications));
+					// console.log('notifications stringify :', JSON.stringify(notifications));
 					await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
 				});
 		} catch (error) {
@@ -142,13 +141,19 @@ class SingleHour extends React.Component {
 
 							try {
 								// Retrieve indexOf item where otherParam is equal to item.otherParam
+								let notifId = null;
 								const index = notifications
 									.map(function(elm) {
+										if (elm.otherParam == otherParam) {
+											notifId = elm.response;
+										}
+
 										return elm.otherParam;
 									})
 									.indexOf(item.otherParam);
 
 								// console.log('index :', index);
+								// console.log('notifId :', notifId);
 
 								// Then remove it from the notifications array
 								if (index > -1) {
@@ -156,8 +161,14 @@ class SingleHour extends React.Component {
 									// console.log('notifications :', notifications);
 								}
 
+								// If notifications table is empty, cancel all notifications by default
+								if (notifications.length == 0) {
+									Notifications.cancelAllScheduledNotificationsAsync();
+								}
+
 								// Finally, set the spliced favorite in local storage
-								// console.log('SET notifications :', JSON.stringify(notifications));
+								// And remove from local notifications
+								Notifications.cancelScheduledNotificationAsync(notifId);
 								await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
 							} catch (exception) {
 								console.log(exception);

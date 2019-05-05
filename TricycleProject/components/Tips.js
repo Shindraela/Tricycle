@@ -5,7 +5,7 @@ import { listCategories } from '../reducer';
 
 class Tips extends Component {
 	static navigationOptions = {
-		title: 'Tips'
+		title: 'Astuces'
 	};
 
 	componentDidMount() {

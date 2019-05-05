@@ -7,7 +7,7 @@ import { listChallenges } from '../reducer';
 class ChallengesList extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
-			title: navigation.getParam('otherParam')
+			title: 'Défis ' + navigation.getParam('otherParam')
 		};
 	};
 

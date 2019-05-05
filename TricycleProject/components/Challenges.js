@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listChallenges } from '../reducer';
 
 class Challenges extends React.Component {
 	static navigationOptions = {
-		title: 'Challenges'
+		title: 'Défis'
 	};
 
 	componentDidMount() {

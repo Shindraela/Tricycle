@@ -1,8 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Appbar } from 'react-native-paper';
 import TabBarIcon from '../components/TabBarIcon';
 import HoursList from '../components/HoursList';
 import SingleHour from '../components/SingleHour';
@@ -27,7 +26,7 @@ const SearchStack = createStackNavigator({
 });
 
 SearchStack.navigationOptions = {
-	tabBarLabel: 'Search',
+	tabBarLabel: 'Recherche',
 	tabBarIcon: ({ focused }) => (
 		<TabBarIcon
 			focused={focused}
@@ -43,7 +42,7 @@ const TipsStack = createStackNavigator({
 });
 
 TipsStack.navigationOptions = {
-	tabBarLabel: 'Tips',
+	tabBarLabel: 'Astuces',
 	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-bulb' : 'md-bulb'} />
 };
 
@@ -53,7 +52,7 @@ const FavoritesStack = createStackNavigator({
 });
 
 FavoritesStack.navigationOptions = {
-	tabBarLabel: 'Favorites',
+	tabBarLabel: 'Favoris',
 	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-star' : 'md-star'} />
 };
 
@@ -64,7 +63,7 @@ const ChallengesStack = createStackNavigator({
 });
 
 ChallengesStack.navigationOptions = {
-	tabBarLabel: 'Challenges',
+	tabBarLabel: 'Défis',
 	tabBarIcon: ({ focused }) => (
 		<TabBarIcon
 			focused={focused}
@@ -79,10 +78,10 @@ export default createMaterialBottomTabNavigator(
 		TipsStack,
 		ChallengesStack,
 		FavoritesStack
-		// ...routes
 	},
 	{
-		initialRouteName: 'SearchStack'
-		// activeColor: '#F44336'
+		initialRouteName: 'SearchStack',
+		activeTintColor: '#eef1f3',
+		inactiveTintColor: '#b8f567'
 	}
 );

@@ -26,10 +26,15 @@ const store = createStore(reducer, applyMiddleware(axiosMiddleware(client)));
 const theme = {
 	...DefaultTheme,
 	colors: {
-		...DefaultTheme.colors
-		// primary: 'tomato',
-		// accent: 'yellow'
-	}
+		...DefaultTheme.colors,
+		primary: '#51b148',
+		accent: '#9bcf63',
+		// text: '#434343',
+		disabled: '#484f56'
+		// text: '#eef1f3'
+		// surface: '#b8f567'
+	},
+	fonts: 'regular'
 };
 
 export default class App extends React.Component {

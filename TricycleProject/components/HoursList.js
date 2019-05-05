@@ -6,10 +6,8 @@ import { listHours } from '../reducer';
 import { getNotif } from '../helpers';
 
 class HoursList extends React.Component {
-	static navigationOptions = ({ navigation }) => {
-		return {
-			title: navigation.getParam('otherParam')
-		};
+	static navigationOptions = {
+		title: 'Horaires de passage'
 	};
 
 	constructor(props) {

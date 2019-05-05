@@ -6,7 +6,7 @@ import SpotModal from './SpotModal';
 
 class Spots extends React.Component {
 	static navigationOptions = {
-		title: 'Spots'
+		title: 'Points de tri à proximité'
 	};
 
 	constructor(props) {

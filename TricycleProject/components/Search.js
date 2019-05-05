@@ -1,18 +1,10 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Button, withTheme, type Theme } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-type Props = {
-	theme: Theme
-};
-
-type State = {
-	loading: boolean
-};
-
-class Search extends React.Component<Props, State> {
+class Search extends React.Component {
 	static navigationOptions = {
-		title: 'Search'
+		title: 'Recherche'
 	};
 
 	state = {
@@ -20,23 +12,19 @@ class Search extends React.Component<Props, State> {
 	};
 
 	render() {
-		const { colors } = this.props.theme;
-
 		return (
-			<ScrollView style={[ styles.container, { backgroundColor: colors.background } ]}>
+			<ScrollView style={styles.container}>
 				<View style={styles.column}>
 					<Button
 						mode="contained"
-						color={colors.accent}
 						icon="favorite"
 						onPress={() => this.props.navigation.navigate('HoursList')}
 						style={styles.button}
 					>
-						Mes horaires de passage
+						Horaires de passage
 					</Button>
 					<Button
 						mode="contained"
-						color={colors.accent}
 						icon="place"
 						onPress={() => this.props.navigation.navigate('Spots')}
 						style={styles.button}
@@ -63,4 +51,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default withTheme(Search);
+export default Search;
