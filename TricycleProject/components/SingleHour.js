@@ -26,12 +26,6 @@ class SingleHour extends React.Component {
 	async componentDidMount() {
 		this.props.listHours();
 		this.fetchNotifications();
-		// let notif = await AsyncStorage.removeItem('notifications');
-
-		// if (notif == null) {
-		// 	const { notifications } = this.state;
-		// 	console.log('notifications :', notifications);
-		// }
 
 		// We need to ask for Notification permissions for ios devices
 		let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -45,6 +39,13 @@ class SingleHour extends React.Component {
 		// handle them in a callback
 		Notifications.addListener(this.handleNotification);
 
+		// For testing, remove all notifications
+		// let notif = await AsyncStorage.removeItem('notifications');
+
+		// if (notif == null) {
+		// 	const { notifications } = this.state;
+		// 	console.log('notifications :', notifications);
+		// }
 		// Notifications.cancelAllScheduledNotificationsAsync();
 	}
 
@@ -93,7 +94,6 @@ class SingleHour extends React.Component {
 		};
 
 		const schedulingOptions = {
-			// time: (new Date()).getTime() + Number(e.nativeEvent.text),
 			repeat: 'minute'
 		};
 
@@ -135,9 +135,8 @@ class SingleHour extends React.Component {
 
 					parsedReq.forEach(async (item) => {
 						// console.log('item.otherParam :', item.otherParam);
-						// console.log('spotToRemove :', spotToRemove);
 
-						// Remove item where notif is equal to the notifToRemove param
+						// Remove item where notif is equal to the otherParam param
 						if (JSON.stringify(item.otherParam) == JSON.stringify(otherParam)) {
 							// console.log('item :', item);
 
@@ -158,7 +157,7 @@ class SingleHour extends React.Component {
 								}
 
 								// Finally, set the spliced favorite in local storage
-								console.log('SET notifications :', JSON.stringify(notifications));
+								// console.log('SET notifications :', JSON.stringify(notifications));
 								await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
 							} catch (exception) {
 								console.log(exception);

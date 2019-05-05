@@ -22,26 +22,7 @@ class HoursList extends React.Component {
 
 	componentDidMount() {
 		this.props.listHours();
-		this.fetchNotifications();
 	}
-
-	fetchNotifications = async () => {
-		try {
-			const notifications = await getNotif();
-
-			if (notifications !== null) {
-				parsedNotifications = JSON.parse(notifications);
-
-				this.setState({
-					notifications: parsedNotifications
-				});
-			}
-			console.log('hourslist fetch notifications :', notifications);
-		} catch (error) {
-			// Error retrieving data
-			console.log(error);
-		}
-	};
 
 	hoursList() {
 		const { hours } = this.props;

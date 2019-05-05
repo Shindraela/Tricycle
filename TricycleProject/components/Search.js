@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, Image } from 'react-native';
-import { Button, Searchbar, withTheme, type Theme } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Button, withTheme, type Theme } from 'react-native-paper';
 
 type Props = {
 	theme: Theme
@@ -43,14 +43,6 @@ class Search extends React.Component<Props, State> {
 					>
 						Points de tri à proximité
 					</Button>
-				</View>
-				<View>
-					<Searchbar
-						placeholder="Search"
-						onChangeText={(query) => this.setState({ firstQuery: query })}
-						value={this.state.firstQuery}
-						style={styles.searchbar}
-					/>
 				</View>
 			</ScrollView>
 		);

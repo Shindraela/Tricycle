@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Alert } from 'react-native';
+import { StyleSheet, ScrollView, Alert, AsyncStorage } from 'react-native';
 import { Title, Caption, Paragraph, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listChallenges } from '../reducer';
-import axios from 'axios';
+import { getMissions } from '../helpers';
 
 class SingleChallenge extends React.Component {
 	static navigationOptions = ({ navigation }) => {
@@ -12,14 +12,36 @@ class SingleChallenge extends React.Component {
 		};
 	};
 
-	componentDidMount() {
-		this.props.listChallenges();
-	}
-
 	constructor(props) {
 		super(props);
-		this.state = {};
+
+		this.state = {
+			missions: []
+		};
 	}
+
+	async componentDidMount() {
+		this.props.listChallenges();
+		this.fetchMissions();
+	}
+
+	fetchMissions = async () => {
+		try {
+			const missions = await getMissions();
+
+			if (missions !== null) {
+				parsedMissions = JSON.parse(missions);
+
+				this.setState({
+					missions: parsedMissions
+				});
+			}
+			// console.log('fetch missions : ', missions);
+		} catch (error) {
+			// Error retrieving data
+			console.log(error);
+		}
+	};
 
 	theChallenge() {
 		const { challenges } = this.props;
@@ -36,16 +58,17 @@ class SingleChallenge extends React.Component {
 	}
 
 	_updateChallengeStatus = async () => {
-		try {
-			// return axios.post('http://192.168.56.1:3000/api/missions')
-			return null;
-		} catch (error) {
-			console.error(error);
-		}
+		const { missions } = this.state;
+		const { navigation } = this.props;
+		const otherParam = navigation.getParam('otherParam');
+		const value = true;
+
+		missions.push({ otherParam, value });
+		await AsyncStorage.setItem('missions', JSON.stringify(missions));
+		// console.log('missions : ', missions);
 	};
 
 	_showAlert = () => {
-		// console.log('this.props :', this.props);
 		Alert.alert(
 			'Mission',
 			'Votre mission a été accompli avec succès !',

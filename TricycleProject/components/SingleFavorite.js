@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView, AsyncStorage, Text } from 'react-native';
 import { Title, Caption, Paragraph, Card, Button } from 'react-native-paper';
-import { getFav, removeFav } from '../helpers';
+import { getFav } from '../helpers';
 
 class SingleFavorite extends React.Component {
 	static navigationOptions = ({ navigation }) => {
