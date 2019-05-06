@@ -29,7 +29,7 @@ class HoursList extends React.Component {
 			<List.Item
 				key={index}
 				right={(props) => <List.Icon {...props} icon="arrow-forward" />}
-				title={hour.num_arrondissement}
+				title={hour.num_arrondissement + ' arrondissement'}
 				onPress={() =>
 					this.props.navigation.navigate('SingleHour', {
 						otherParam: hour.num_arrondissement.toString()
