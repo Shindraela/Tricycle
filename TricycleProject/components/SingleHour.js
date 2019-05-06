@@ -17,8 +17,8 @@ class SingleHour extends React.Component {
 		super(props);
 
 		this.state = {
-			title: 'Hello World',
-			body: 'Say something!',
+			title: null,
+			body: null,
 			notifications: []
 		};
 	}
@@ -82,10 +82,58 @@ class SingleHour extends React.Component {
 		}
 	};
 
-	sendPushNotification = async (title = this.state.title, body = this.state.body) => {
+	sendPushNotification = async () => {
 		const { notifications } = this.state;
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
+		const { hours } = this.props;
+		let currentDate = new Date();
+		let currentDay = currentDate.getDay();
+		let title = null;
+		let body = null;
+
+		hours.map((hour, index) => {
+			if (hour.num_arrondissement == 1) {
+				if (currentDay == 1 || currentDay == 4) {
+					title = 'Ordures pour la poubelle jaune';
+					body = hour.horaire_poub_jaune;
+				} else if (currentDay == 1 || currentDay == 6) {
+					title = 'Ordures pour la poubelle verte';
+					body = hour.horaire_poub_verte;
+				} else if (currentDay == 4) {
+					title = 'Ordures pour la poubelle blanche';
+					body = hour.horaire_poub_blanche;
+				} else {
+					return;
+				}
+
+				this.setState({
+					title,
+					body
+				});
+			}
+
+			if (hour.num_arrondissement == 3) {
+				if (currentDay == 2 || currentDay == 5) {
+					title = 'Ordures pour la poubelle jaune';
+					body = hour.horaire_poub_jaune;
+				} else if (currentDay) {
+					title = 'Ordures pour la poubelle verte';
+					body = hour.horaire_poub_verte;
+				} else if (currentDay == 2) {
+					title = 'Ordures pour la poubelle blanche';
+					body = hour.horaire_poub_blanche;
+				} else {
+					return;
+				}
+
+				this.setState({
+					title,
+					body
+				});
+			}
+		});
+		// console.log('title, body :', title, body);
 
 		const localNotification = {
 			title: title,
@@ -185,8 +233,6 @@ class SingleHour extends React.Component {
 	}
 
 	render() {
-		const { notificationId } = this.state;
-
 		return (
 			<ScrollView style={styles.container}>
 				<Card style={styles.card}>{this.theHour()}</Card>
