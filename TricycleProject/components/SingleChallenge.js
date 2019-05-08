@@ -16,24 +16,45 @@ class SingleChallenge extends React.Component {
 		super(props);
 
 		this.state = {
-			missions: []
+			missions: [],
+			isDisabled: false
 		};
 	}
 
 	async componentDidMount() {
 		this.props.listChallenges();
 		this.fetchMissions();
+
+		// For testing, remove all missions
+		// let miss = await AsyncStorage.removeItem('missions');
+
+		// if (miss == null) {
+		// 	const { missions } = this.state;
+		// 	console.log('missions :', missions);
+		// }
 	}
 
 	fetchMissions = async () => {
 		try {
 			const missions = await getMissions();
+			const { navigation } = this.props;
+			const { isDisabled } = this.state;
+			const otherParam = navigation.getParam('otherParam');
 
 			if (missions !== null) {
 				parsedMissions = JSON.parse(missions);
 
 				this.setState({
 					missions: parsedMissions
+				});
+
+				// Check if mission is already a success, disabled the button for accomplish it
+				parsedMissions.map((mission, index) => {
+					if (mission.status == true && mission.otherParam == otherParam) {
+						this.setState({
+							isDisabled: true
+						});
+					}
 				});
 			}
 			// console.log('fetch missions : ', missions);
@@ -61,9 +82,9 @@ class SingleChallenge extends React.Component {
 		const { missions } = this.state;
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
-		const value = true;
+		const status = true;
 
-		missions.push({ otherParam, value });
+		missions.push({ otherParam, status });
 		await AsyncStorage.setItem('missions', JSON.stringify(missions));
 		// console.log('missions : ', missions);
 	};
@@ -73,8 +94,14 @@ class SingleChallenge extends React.Component {
 			'Mission',
 			'Votre mission a été accompli avec succès !',
 			[ { text: 'OK', onPress: () => this._updateChallengeStatus() } ],
-			{ cancelable: false }
+			{
+				cancelable: false
+			}
 		);
+
+		this.setState({
+			isDisabled: true
+		});
 	};
 
 	render() {
@@ -82,7 +109,13 @@ class SingleChallenge extends React.Component {
 			<ScrollView style={[ styles.container ]}>
 				<Card style={styles.card}>{this.theChallenge()}</Card>
 
-				<Button mode="contained" icon="check" onPress={this._showAlert} style={styles.button}>
+				<Button
+					mode="contained"
+					icon="check"
+					onPress={this._showAlert}
+					style={styles.button}
+					disabled={this.state.isDisabled}
+				>
 					Valider la mission
 				</Button>
 			</ScrollView>
