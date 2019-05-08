@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, AsyncStorage, Alert } from 'react-native';
 import { Portal, Modal, IconButton, Button } from 'react-native-paper';
 import { getFav } from '../helpers';
 
@@ -12,6 +12,7 @@ class SpotModal extends React.Component {
 
 	addFromFavoriteSpots = async (favoryAdded) => {
 		const favorites = (await getFav()) || [];
+
 		try {
 			// Put data in users phone
 			if (favorites.length == 0) {
@@ -26,6 +27,19 @@ class SpotModal extends React.Component {
 			// Error retrieving data
 			console.log(error);
 		}
+	};
+
+	_addFavoriteAlert = () => {
+		const { dataCurrentMarker } = this.props;
+
+		Alert.alert(
+			'Point de tri',
+			'Votre point de tri a été ajouté aux favoris avec succès !',
+			[ { text: 'OK', onPress: () => this.addFromFavoriteSpots(dataCurrentMarker) } ],
+			{
+				cancelable: false
+			}
+		);
 	};
 
 	render() {
@@ -52,7 +66,7 @@ class SpotModal extends React.Component {
 							<Button
 								mode="contained"
 								icon="favorite"
-								onPress={() => this.addFromFavoriteSpots(dataCurrentMarker)}
+								onPress={this._addFavoriteAlert}
 								style={styles.button}
 							>
 								Mettre en favori

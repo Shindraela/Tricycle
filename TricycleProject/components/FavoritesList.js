@@ -20,33 +20,6 @@ class FavoritesList extends React.Component {
 		this.fetchFavorites();
 	}
 
-	updateStorageFavorites = async (favorites) => {
-		try {
-			// met à jour la valeur de "favorites" en local
-			await AsyncStorage.setItem('favorites', favorites);
-		} catch (error) {
-			// Error retrieving data
-			console.log(error);
-		}
-	};
-
-	removeFavory = async (favoryRemoved) => {
-		const { favorites } = this.state;
-
-		const index = favorites.indexOf(favoryRemoved);
-
-		if (index > -1) favorites.splice(index, 1);
-
-		this.updateStorageFavorites(favorites);
-	};
-
-	// addFavory = async (favoryAdded) => {
-	// 	const { favorites } = this.state;
-	// 	favorites.push(favoryAdded);
-
-	// 	this.updateStorageFavorites(favorites);
-	// };
-
 	fetchFavorites = async () => {
 		try {
 			const favorites = await getFav();
@@ -66,10 +39,6 @@ class FavoritesList extends React.Component {
 
 	favoritesList() {
 		favorites = this.state.favorites;
-		const { navigation } = this.props;
-		const otherParam = navigation.getParam('otherParam');
-		// console.log('favorites in favoritesList :', favorites);
-		// console.log('typeof favorites in favoritesList :', typeof favorites);
 
 		return favorites.map((fav, index) => (
 			<List.Item
@@ -81,15 +50,6 @@ class FavoritesList extends React.Component {
 						otherParam: fav.adresse
 					})}
 			/>
-			// <View key={index} style={styles.infoContent}>
-			// 	<Text style={styles.title}>{fav.adresse}</Text>
-			// 	<Text style={styles.text}>
-			// 		Adresse : {fav.ville} {fav.code_postal}
-			// 	</Text>
-			// 	<Text style={styles.text}>Complément d'adresse : {fav.complement_d_adresse}</Text>
-			// 	<Text style={styles.text}>Horaires : {fav.horaires}</Text>
-			// 	<Text style={styles.text}>Jours de tenue : {fav.jours_de_tenue}</Text>
-			// </View>
 		));
 	}
 
@@ -99,10 +59,6 @@ class FavoritesList extends React.Component {
 				<List.Section>{this.favoritesList()}</List.Section>
 			</ScrollView>
 		);
-
-		// return (
-		// 	<View style={styles.container}>{favorites && favorites.map((fav, i) => <Text key={i}>{fav}</Text>)}</View>
-		// );
 	}
 }
 

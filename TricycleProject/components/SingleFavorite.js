@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, AsyncStorage, Text } from 'react-native';
+import { StyleSheet, ScrollView, AsyncStorage, Alert } from 'react-native';
 import { Title, Caption, Paragraph, Card, Button } from 'react-native-paper';
 import { getFav } from '../helpers';
 
@@ -54,20 +54,12 @@ class SingleFavorite extends React.Component {
 		// Method for update favorites array
 		AsyncStorage.getAllKeys().then(async (keys) =>
 			AsyncStorage.multiGet(keys).then(async (result) => {
-				// console.log('result :', result);
-
 				result.map(async (req) => {
-					// console.log('req :', JSON.parse(req[1]));
 					let parsedReq = JSON.parse(req[1]);
 
 					parsedReq.forEach(async (item) => {
-						// console.log('item.adresse :', item.adresse);
-						// console.log('spotToRemove :', spotToRemove);
-
 						// Remove item where adresse is equal to the spotToRemove param
 						if (JSON.stringify(item.adresse) == JSON.stringify(spotToRemove)) {
-							// console.log('item :', item);
-
 							try {
 								// Retrieve indexOf item where adresse is equal to item.adresse
 								const index = favorites
@@ -76,12 +68,9 @@ class SingleFavorite extends React.Component {
 									})
 									.indexOf(item.adresse);
 
-								// console.log('index :', index);
-
 								// Then remove it from the favorites array
 								if (index > -1) {
 									favorites.splice(index, 1);
-									// console.log('favorites :', favorites);
 								}
 
 								// Finally, set the spliced favorite in local storage
@@ -114,17 +103,27 @@ class SingleFavorite extends React.Component {
 		));
 	}
 
+	_removeFavoriteAlert = () => {
+		Alert.alert(
+			'Favori retiré',
+			'Ce spot de tri a bien été retiré de vos favoris !',
+			[ { text: 'OK', onPress: () => this.removeFromFavoriteSpots() } ],
+			{
+				cancelable: false
+			}
+		);
+
+		this.setState({
+			isDisabled: true
+		});
+	};
+
 	render() {
 		return (
 			<ScrollView style={styles.container}>
 				<Card style={styles.card}>{this.theFavoriteSpot()}</Card>
 
-				<Button
-					mode="contained"
-					icon="favorite"
-					onPress={() => this.removeFromFavoriteSpots()}
-					style={styles.button}
-				>
+				<Button mode="contained" icon="favorite" onPress={this._removeFavoriteAlert} style={styles.button}>
 					Enlever des favoris
 				</Button>
 			</ScrollView>
