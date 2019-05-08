@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { Modal, Text, View, StyleSheet, AsyncStorage } from 'react-native';
-import { IconButton, Button } from 'react-native-paper';
+import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
+import { Portal, Modal, IconButton, Button } from 'react-native-paper';
 import { getFav } from '../helpers';
 
 class SpotModal extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {};
 	}
 
 	addFromFavoriteSpots = async (favoryAdded) => {
 		const favorites = (await getFav()) || [];
-		// console.log('favorites :', favorites);
-
 		try {
 			// Put data in users phone
 			if (favorites.length == 0) {
@@ -33,73 +32,44 @@ class SpotModal extends React.Component {
 		const { visible, dataCurrentMarker, close } = this.props;
 
 		return (
-			<Modal visible={visible} animationType="slide" onRequestClose={close}>
-				<View style={styles.modalContent}>
-					<IconButton icon="close" size={24} onPress={close} />
-					<View style={styles.infoContent}>
-						<Text style={styles.title}>{dataCurrentMarker.adresse}</Text>
-						<Text style={styles.text}>
-							Adresse : {dataCurrentMarker.ville} {dataCurrentMarker.code_postal}
-						</Text>
-						<Text style={styles.text}>Complément d'adresse : {dataCurrentMarker.complement_d_adresse}</Text>
-						<Text style={styles.text}>Horaires : {dataCurrentMarker.horaires}</Text>
-						<Text style={styles.text}>Jours de tenue : {dataCurrentMarker.jours_de_tenue}</Text>
-					</View>
+			<Portal>
+				<Modal visible={visible} onDismiss={close}>
+					<View style={styles.modalContent}>
+						<IconButton icon="close" size={24} onPress={close} />
+						<View>
+							<Text style={styles.title}>{dataCurrentMarker.adresse}</Text>
+							<Text style={styles.text}>
+								Adresse : {dataCurrentMarker.ville} {dataCurrentMarker.code_postal}
+							</Text>
+							<Text style={styles.text}>
+								Complément d'adresse : {dataCurrentMarker.complement_d_adresse}
+							</Text>
+							<Text style={styles.text}>Horaires : {dataCurrentMarker.horaires}</Text>
+							<Text style={styles.text}>Jours de tenue : {dataCurrentMarker.jours_de_tenue}</Text>
+						</View>
 
-					<View>
-						<Button
-							mode="contained"
-							icon={require('../assets/heart.png')}
-							onPress={() => this.addFromFavoriteSpots(dataCurrentMarker)}
-							style={styles.button}
-						>
-							Mettre en favori
-						</Button>
+						<View>
+							<Button
+								mode="contained"
+								icon="favorite"
+								onPress={() => this.addFromFavoriteSpots(dataCurrentMarker)}
+								style={styles.button}
+							>
+								Mettre en favori
+							</Button>
+						</View>
 					</View>
-				</View>
-			</Modal>
+				</Modal>
+			</Portal>
 		);
 	}
 }
 
-// const SpotModal = ({ visible, dataCurrentMarker, close }) => (
-// 	<Modal visible={visible} animationType="slide" onRequestClose={close}>
-// 		<View style={styles.modalContent}>
-// 			<IconButton icon="close" size={24} onPress={close} />
-// 			<View style={styles.infoContent}>
-// 				<Text style={styles.title}>{dataCurrentMarker.adresse}</Text>
-// 				<Text style={styles.text}>
-// 					Adresse : {dataCurrentMarker.ville} {dataCurrentMarker.code_postal}
-// 				</Text>
-// 				<Text style={styles.text}>Complément d'adresse : {dataCurrentMarker.complement_d_adresse}</Text>
-// 				<Text style={styles.text}>Horaires : {dataCurrentMarker.horaires}</Text>
-// 				<Text style={styles.text}>Jours de tenue : {dataCurrentMarker.jours_de_tenue}</Text>
-// 			</View>
-
-// 			<View>
-// 				<Button
-// 					mode="contained"
-// 					icon={require('../assets/heart.png')}
-// 					onPress={() => this.addFavory('cc')}
-// 					style={styles.button}
-// 				>
-// 					Mettre en favori
-// 				</Button>
-// 			</View>
-// 		</View>
-// 	</Modal>
-// );
-
 const styles = StyleSheet.create({
 	modalContent: {
-		backgroundColor: 'rgba(255,255,255,0.8)',
-		width: 300,
-		height: 300
-	},
-	infoContent: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-between'
+		backgroundColor: 'rgb(255,255,255)',
+		borderRadius: 5,
+		margin: 10
 	},
 	title: {
 		fontSize: 20,

@@ -121,7 +121,7 @@ class SingleFavorite extends React.Component {
 
 				<Button
 					mode="contained"
-					icon={require('../assets/heart.png')}
+					icon="favorite"
 					onPress={() => this.removeFromFavoriteSpots()}
 					style={styles.button}
 				>
