@@ -20,6 +20,15 @@ class FavoritesList extends React.Component {
 		this.fetchFavorites();
 	}
 
+	componentWillMount() {
+		this.forceUpdating();
+		this.props.navigation.addListener('willFocus', this.forceUpdating);
+	}
+
+	forceUpdating = () => {
+		this.fetchFavorites();
+	};
+
 	fetchFavorites = async () => {
 		try {
 			const favorites = await getFav();

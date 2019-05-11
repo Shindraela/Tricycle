@@ -17,6 +17,15 @@ class ChallengesList extends React.Component {
 		this.fetchMissions();
 	}
 
+	componentWillMount() {
+		this.forceUpdating();
+		this.props.navigation.addListener('willFocus', this.forceUpdating);
+	}
+
+	forceUpdating = () => {
+		this.fetchMissions();
+	};
+
 	constructor(props) {
 		super(props);
 
