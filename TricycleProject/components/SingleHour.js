@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, ScrollView, AsyncStorage, Alert } from 'react-native';
 import { Title, Paragraph, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
@@ -19,7 +19,30 @@ class SingleHour extends React.Component {
 		this.state = {
 			title: null,
 			body: null,
-			notifications: []
+			notifications: [],
+			isNotified: [],
+			districts: [
+				'1',
+				'2',
+				'3',
+				'4',
+				'5',
+				'6',
+				'7',
+				'8',
+				'9',
+				'10',
+				'11',
+				'12',
+				'13',
+				'14',
+				'15',
+				'16',
+				'17',
+				'18',
+				'19',
+				'20'
+			]
 		};
 	}
 
@@ -65,6 +88,8 @@ class SingleHour extends React.Component {
 	}
 
 	fetchNotifications = async () => {
+		const { districts } = this.state;
+
 		try {
 			const notifications = await getNotif();
 
@@ -74,8 +99,22 @@ class SingleHour extends React.Component {
 				this.setState({
 					notifications: parsedNotifications
 				});
+
+				// Check if district is already a success, disable the button
+				parsedNotifications.map((notif, index) => {
+					districts.map((dist) => {
+						if (notif.status == true && notif.otherParam == dist) {
+							let tabNotified = this.state.isNotified;
+							tabNotified.push(dist);
+
+							// Update checked table with district
+							this.setState({
+								isNotified: tabNotified
+							});
+						}
+					});
+				});
 			}
-			// console.log('fetch notifications :', notifications);
 		} catch (error) {
 			// Error retrieving data
 			console.log(error);
@@ -87,6 +126,7 @@ class SingleHour extends React.Component {
 		const { navigation } = this.props;
 		const otherParam = navigation.getParam('otherParam');
 		const { hours } = this.props;
+		const status = true;
 		let currentDate = new Date();
 		let currentDay = currentDate.getDay();
 		let title = null;
@@ -133,7 +173,6 @@ class SingleHour extends React.Component {
 				});
 			}
 		});
-		// console.log('title, body :', title, body);
 
 		const localNotification = {
 			title: title,
@@ -149,15 +188,13 @@ class SingleHour extends React.Component {
 			// (ie. another app being used or device's screen is locked)
 			Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions)
 				.then((response) => {
-					notifications.push({ otherParam, response });
+					notifications.push({ otherParam, response, status });
 
 					this.setState({
 						notifications
 					});
-					// console.log('notifications :', notifications);
 				})
 				.finally(async () => {
-					// console.log('notifications stringify :', JSON.stringify(notifications));
 					await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
 				});
 		} catch (error) {
@@ -174,19 +211,12 @@ class SingleHour extends React.Component {
 		// Method for update notifications array
 		AsyncStorage.getAllKeys().then(async (keys) =>
 			AsyncStorage.multiGet(keys).then(async (result) => {
-				// console.log('result :', result);
-
 				result.map(async (req) => {
-					// console.log('req :', JSON.parse(req[1]));
 					let parsedReq = JSON.parse(req[1]);
 
 					parsedReq.forEach(async (item) => {
-						// console.log('item.otherParam :', item.otherParam);
-
 						// Remove item where notif is equal to the otherParam param
 						if (JSON.stringify(item.otherParam) == JSON.stringify(otherParam)) {
-							// console.log('item :', item);
-
 							try {
 								// Retrieve indexOf item where otherParam is equal to item.otherParam
 								let notifId = null;
@@ -200,13 +230,9 @@ class SingleHour extends React.Component {
 									})
 									.indexOf(item.otherParam);
 
-								// console.log('index :', index);
-								// console.log('notifId :', notifId);
-
 								// Then remove it from the notifications array
 								if (index > -1) {
 									notifications.splice(index, 1);
-									// console.log('notifications :', notifications);
 								}
 
 								// If notifications table is empty, cancel all notifications by default
@@ -232,7 +258,38 @@ class SingleHour extends React.Component {
 		console.log('ok! got your notif');
 	}
 
+	_AddNotificationAlert = () => {
+		Alert.alert(
+			'Notification activée',
+			'La notification pour cette arrondissement a été activé !',
+			// [ { text: 'OK', onPress: () => {} } ],
+			[ { text: 'OK', onPress: () => this.sendPushNotification() } ],
+			{
+				cancelable: false
+			}
+		);
+	};
+
+	_removeNotificationAlert = () => {
+		Alert.alert(
+			'Notification désactivée',
+			'La notification pour cette arrondissement a été désactivé !',
+			// [ { text: 'OK', onPress: () => {} } ],
+			[ { text: 'OK', onPress: () => this.cancelPushNotification() } ],
+			{
+				cancelable: false
+			}
+		);
+
+		this.setState({
+			isDisabled: true
+		});
+	};
+
 	render() {
+		const { navigation } = this.props;
+		const otherParam = navigation.getParam('otherParam');
+
 		return (
 			<ScrollView style={styles.container}>
 				<Card style={styles.card}>{this.theHour()}</Card>
@@ -240,8 +297,9 @@ class SingleHour extends React.Component {
 				<Button
 					mode="contained"
 					icon="favorite"
-					onPress={() => this.sendPushNotification()}
+					onPress={this._AddNotificationAlert}
 					style={styles.button}
+					disabled={this.state.isNotified.includes(otherParam) ? true : false}
 				>
 					Etre notifié
 				</Button>
@@ -249,8 +307,9 @@ class SingleHour extends React.Component {
 				<Button
 					mode="contained"
 					icon="favorite"
-					onPress={() => this.cancelPushNotification()}
+					onPress={this._removeNotificationAlert}
 					style={styles.button}
+					disabled={!this.state.isNotified.includes(otherParam) ? true : false}
 				>
 					Ne plus être notifié
 				</Button>

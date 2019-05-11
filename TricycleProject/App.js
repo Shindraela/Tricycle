@@ -27,24 +27,20 @@ const theme = {
 	...DefaultTheme,
 	colors: {
 		...DefaultTheme.colors,
-		primary: '#51b148',
+		// primary: '#51b148',
+		primary: '#a5d6a7',
 		accent: '#9bcf63',
+		text: '#000',
 		// text: '#434343',
 		disabled: '#484f56'
 		// text: '#eef1f3'
 		// surface: '#b8f567'
 	},
-	fonts: 'regular'
+	fonts: 'regular',
+	roundness: 5
 };
 
 export default class App extends React.Component {
-	// state = {
-	// 	theme: DefaultTheme,
-	// 	colors: {
-	// 		...DefaultTheme.colors
-	// 	}
-	// };
-
 	render() {
 		return (
 			<StoreProvider store={store}>

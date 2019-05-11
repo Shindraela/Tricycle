@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, FlatList, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Headline } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listCategories } from '../reducer';
 
@@ -24,7 +25,7 @@ class Tips extends Component {
 						otherParam: category.name
 					})}
 			>
-				<Text style={styles.alignCenter}>{category.name}</Text>
+				<Text style={styles.text}>{category.name}</Text>
 			</TouchableOpacity>
 		));
 	}
@@ -32,7 +33,13 @@ class Tips extends Component {
 	render() {
 		return (
 			<ScrollView style={styles.container}>
-				<View style={styles.card}>{this.categoriesList()}</View>
+				<View style={styles.column}>
+					<Headline style={styles.headline}>
+						Pour éviter de gaspiller au maximum, cette section propose quelques astuces de DIY par thème que
+						vous pourrez mettre en pratique avec des objets que vous utilisez au quotidien !
+					</Headline>
+					<View style={styles.card}>{this.categoriesList()}</View>
+				</View>
 			</ScrollView>
 		);
 	}
@@ -42,6 +49,15 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
+	column: {
+		flexDirection: 'column',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+		paddingHorizontal: 12
+	},
+	headline: {
+		fontSize: 18
+	},
 	card: {
 		backgroundColor: '#fff',
 		justifyContent: 'center',
@@ -50,15 +66,19 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	cardContent: {
-		backgroundColor: '#018786',
+		// backgroundColor: '#018786',
+		backgroundColor: '#a5d6a7',
+		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: 170,
 		height: 170,
 		margin: 10
 	},
-	alignCenter: {
+	text: {
 		textAlign: 'center',
+		color: '#fff',
+		fontSize: 20,
 		margin: 5
 	},
 	stretch: {
@@ -81,5 +101,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tips);
-
-// export default withTheme(Tips);

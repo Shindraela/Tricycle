@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Headline, Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listChallenges } from '../reducer';
 
@@ -32,7 +32,7 @@ class Challenges extends React.Component {
 						otherParam: challenge.name
 					})}
 			>
-				<Text style={styles.alignCenter}>{challenge.name}</Text>
+				<Text style={styles.text}>{challenge.name}</Text>
 			</TouchableOpacity>
 		));
 	}
@@ -41,12 +41,10 @@ class Challenges extends React.Component {
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.column}>
-					<Text style={styles.text}>Vous avez actuellement le badge</Text>
-					<Text style={styles.text}>[insérez l'image du badge]</Text>
-					<Text>
-						Pour débloquer le prochain badge, vous devez terminer un thème et toutes ses missions. Pour
-						chaque thème terminé, le badge suivant sera déverrouillé. Bonne chance !
-					</Text>
+					<Headline style={styles.headline}>
+						Pour apprendre à mieux recycler et moins gaspiller, des missions diverses et variées vous sont
+						proposées par thème. Une fois terminé, vous serez un pro du recyclage !
+					</Headline>
 
 					<View style={styles.card}>{this.challengesList()}</View>
 				</View>
@@ -62,7 +60,11 @@ const styles = StyleSheet.create({
 	column: {
 		flexDirection: 'column',
 		flexWrap: 'wrap',
+		justifyContent: 'space-between',
 		paddingHorizontal: 12
+	},
+	headline: {
+		fontSize: 18
 	},
 	card: {
 		backgroundColor: '#fff',
@@ -72,19 +74,30 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	cardContent: {
-		backgroundColor: '#018786',
+		// backgroundColor: '#018786',
+		backgroundColor: '#a5d6a7',
+		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: 170,
 		height: 170,
 		margin: 10
 	},
-	alignCenter: {
-		textAlign: 'center',
-		margin: 5
+	infoContent: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 10
+	},
+	image: {
+		width: 80,
+		height: 80
 	},
 	text: {
-		textAlign: 'center'
+		textAlign: 'center',
+		color: '#ffffff',
+		fontSize: 20,
+		margin: 15
 	}
 });
 

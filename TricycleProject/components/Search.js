@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 
 class Search extends React.Component {
 	static navigationOptions = {
-		title: 'Recherche'
+		title: 'Accueil'
 	};
 
 	state = {
@@ -13,7 +13,10 @@ class Search extends React.Component {
 
 	render() {
 		return (
-			<ScrollView style={styles.container}>
+			<View style={styles.container}>
+				<View style={styles.imageContainer}>
+					<Image source={require('../assets/recycling_teal.png')} />
+				</View>
 				<View style={styles.column}>
 					<Button
 						mode="contained"
@@ -32,16 +35,29 @@ class Search extends React.Component {
 						Points de tri à proximité
 					</Button>
 				</View>
-			</ScrollView>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between'
+	},
+	headline: {
+		textAlign: 'center',
+		padding: 5
+	},
+	imageContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 10
 	},
 	column: {
+		flex: 1,
 		flexDirection: 'column',
 		flexWrap: 'wrap',
 		paddingHorizontal: 12

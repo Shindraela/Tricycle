@@ -57,7 +57,6 @@ class SingleChallenge extends React.Component {
 					}
 				});
 			}
-			// console.log('fetch missions : ', missions);
 		} catch (error) {
 			// Error retrieving data
 			console.log(error);
@@ -86,7 +85,6 @@ class SingleChallenge extends React.Component {
 
 		missions.push({ otherParam, status });
 		await AsyncStorage.setItem('missions', JSON.stringify(missions));
-		// console.log('missions : ', missions);
 	};
 
 	_showAlert = () => {

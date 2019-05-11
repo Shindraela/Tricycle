@@ -81,7 +81,10 @@ export default createMaterialBottomTabNavigator(
 	},
 	{
 		initialRouteName: 'SearchStack',
-		activeTintColor: '#eef1f3',
-		inactiveTintColor: '#b8f567'
+		activeColor: '#ffffff',
+		inactiveColor: '#ffffff',
+		barStyle: {
+			backgroundColor: '#75a478'
+		}
 	}
 );
