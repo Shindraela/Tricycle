@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 import { getFav } from '../helpers';
 

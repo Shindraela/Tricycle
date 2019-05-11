@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listHours } from '../reducer';
-import { getNotif } from '../helpers';
 
 class HoursList extends React.Component {
 	static navigationOptions = {
