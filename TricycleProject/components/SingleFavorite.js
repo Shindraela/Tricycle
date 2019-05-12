@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, ScrollView, AsyncStorage, Alert } from 'react-native';
-import { Title, Caption, Paragraph, Card, Button } from 'react-native-paper';
+import { StyleSheet, ScrollView, AsyncStorage } from 'react-native';
+import { Title, Caption, Paragraph, Card, Button, Text } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { listSpots } from '../reducer';
 import { getFav } from '../helpers';
 
 class SingleFavorite extends React.Component {
@@ -10,18 +12,24 @@ class SingleFavorite extends React.Component {
 		};
 	};
 
+	componentDidMount() {
+		this.props.listSpots();
+		this.fetchFavorites();
+
+		// setTimeout(() => {
+		// 	this.spotsContent();
+		// }, 1000);
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			favorites: [],
+			currentSpotImage: null,
 			favoriteSpotKey: null,
 			spotToRemove: null
 		};
-	}
-
-	componentDidMount() {
-		this.fetchFavorites();
 	}
 
 	fetchFavorites = async () => {
@@ -85,6 +93,15 @@ class SingleFavorite extends React.Component {
 		);
 	};
 
+	spotsContent() {
+		const { navigation, spots } = this.props;
+		const otherParam = navigation.getParam('otherParam');
+
+		return spots.filter((spot) => spot.adresse == otherParam).map((spot, index) => {
+			<Card.Cover source={{ uri: spot.image }} />;
+		});
+	}
+
 	theFavoriteSpot() {
 		favorites = this.state.favorites;
 		const { navigation } = this.props;
@@ -103,31 +120,27 @@ class SingleFavorite extends React.Component {
 		));
 	}
 
-	_removeFavoriteAlert = () => {
-		Alert.alert(
-			'Favori retiré',
-			'Ce spot de tri a bien été retiré de vos favoris !',
-			[ { text: 'OK', onPress: () => this.removeFromFavoriteSpots() } ],
-			{
-				cancelable: false
-			}
-		);
-
-		this.setState({
-			isDisabled: true
-		});
-	};
-
 	render() {
-		return (
-			<ScrollView style={styles.container}>
-				<Card style={styles.card}>{this.theFavoriteSpot()}</Card>
+		const { spots } = this.props;
+		console.log('spots :', spots);
 
-				<Button mode="contained" icon="favorite" onPress={this._removeFavoriteAlert} style={styles.button}>
-					Enlever des favoris
-				</Button>
-			</ScrollView>
-		);
+		if (spots) {
+			return (
+				<ScrollView style={styles.container}>
+					<Card style={styles.card}>{this.spotsContent()}</Card>
+					<Card style={styles.card}>{this.theFavoriteSpot()}</Card>
+
+					<Button
+						mode="contained"
+						icon="favorite"
+						onPress={() => this.removeFromFavoriteSpots()}
+						style={styles.button}
+					>
+						Enlever des favoris
+					</Button>
+				</ScrollView>
+			);
+		}
 	}
 }
 
@@ -144,4 +157,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SingleFavorite;
+const mapStateToProps = (state) => {
+	let storedRepositories = state.spots.map((spot) => ({ key: spot.id, ...spot }));
+	return {
+		spots: storedRepositories
+	};
+};
+
+const mapDispatchToProps = {
+	listSpots
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleFavorite);

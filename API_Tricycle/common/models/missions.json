@@ -1,16 +1,1 @@
-{
-	"name": "missions",
-	"base": "PersistedModel",
-	"idInjection": true,
-	"options": { "validateUpsert": true },
-	"properties": {
-		"category": { "type": "string", "required": true },
-		"name": { "type": "string", "required": true },
-		"text": { "type": "string", "required": true },
-		"status": { "type": "number", "required": true }
-	},
-	"validations": [],
-	"relations": {},
-	"acls": [],
-	"methods": {}
-}
+{"name":"missions","base":"PersistedModel","idInjection":true,"options":{"validateUpsert":true},"properties":{"category":{"type":"string","required":true},"name":{"type":"string","required":true},"text":{"type":"string","required":true},"status":{"type":"number","required":true}},"validations":[],"relations":{},"acls":[],"methods":{}}

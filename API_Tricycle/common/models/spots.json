@@ -1,0 +1,1 @@
+{"name":"spots","base":"PersistedModel","idInjection":true,"options":{"validateUpsert":true},"properties":{"adresse":{"type":"string","required":true},"image":{"type":"string"},"status":{"type":"boolean"}},"validations":[],"relations":{},"acls":[],"methods":{}}

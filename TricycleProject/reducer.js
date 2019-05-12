@@ -10,8 +10,11 @@ export const GET_TIPS_FAIL = 'TricycleProject/astuces/LOAD_FAIL';
 export const GET_CHALLENGES = 'TricycleProject/missions/LOAD';
 export const GET_CHALLENGES_SUCCESS = 'TricycleProject/missions/LOAD_SUCCESS';
 export const GET_CHALLENGES_FAIL = 'TricycleProject/missions/LOAD_FAIL';
+export const GET_SPOTS = 'TricycleProject/spots/LOAD';
+export const GET_SPOTS_SUCCESS = 'TricycleProject/spots/LOAD_SUCCESS';
+export const GET_SPOTS_FAIL = 'TricycleProject/spots/LOAD_FAIL';
 
-export default function reducer(state = { hours: [], categories: [], tips: [], challenges: [] }, action) {
+export default function reducer(state = { hours: [], categories: [], tips: [], challenges: [], spots: [] }, action) {
 	switch (action.type) {
 		case GET_HOURS:
 			return { ...state, loading: true };
@@ -52,6 +55,16 @@ export default function reducer(state = { hours: [], categories: [], tips: [], c
 				...state,
 				loading: false,
 				error: 'Error while fetching challenges'
+			};
+		case GET_SPOTS:
+			return { ...state, loading: true };
+		case GET_SPOTS_SUCCESS:
+			return { ...state, loading: false, spots: action.payload.data };
+		case GET_SPOTS_FAIL:
+			return {
+				...state,
+				loading: false,
+				error: 'Error while fetching spots'
 			};
 		default:
 			return state;
@@ -98,6 +111,17 @@ export function listChallenges() {
 		payload: {
 			request: {
 				url: `/missions`
+			}
+		}
+	};
+}
+
+export function listSpots() {
+	return {
+		type: GET_SPOTS,
+		payload: {
+			request: {
+				url: `/spots`
 			}
 		}
 	};

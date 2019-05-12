@@ -58,8 +58,7 @@ class SingleHour extends React.Component {
 		}
 
 		// If we want to do something with the notification when the app
-		// is active, we need to listen to notification events and
-		// handle them in a callback
+		// is active, we need to listen to notification events and handle them in a callback
 		Notifications.addListener(this.handleNotification);
 
 		// For testing, remove all notifications
@@ -71,6 +70,15 @@ class SingleHour extends React.Component {
 		// }
 		// Notifications.cancelAllScheduledNotificationsAsync();
 	}
+
+	componentWillMount() {
+		this.forceUpdating();
+		this.props.navigation.addListener('willFocus', this.forceUpdating);
+	}
+
+	forceUpdating = () => {
+		this.fetchNotifications();
+	};
 
 	theHour() {
 		const { hours } = this.props;

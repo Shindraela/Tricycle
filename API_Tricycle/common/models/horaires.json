@@ -1,16 +1,1 @@
-{
-	"name": "horaires",
-	"base": "PersistedModel",
-	"idInjection": true,
-	"options": { "validateUpsert": true },
-	"properties": {
-		"num_arrondissement": { "type": "number", "required": true },
-		"horaire_poub_jaune": { "type": "string", "required": true },
-		"horaire_poub_verte": { "type": "string", "required": true },
-		"horaire_poub_blanche": { "type": "string", "required": true }
-	},
-	"validations": [],
-	"relations": {},
-	"acls": [],
-	"methods": {}
-}
+{"name":"horaires","base":"PersistedModel","idInjection":true,"options":{"validateUpsert":true},"properties":{"num_arrondissement":{"type":"number","required":true},"horaire_poub_jaune":{"type":"string","required":true},"horaire_poub_verte":{"type":"string","required":true},"horaire_poub_blanche":{"type":"string","required":true}},"validations":[],"relations":{},"acls":[],"methods":{}}

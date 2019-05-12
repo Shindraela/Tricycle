@@ -20,7 +20,7 @@ class Search extends React.Component {
 				<View style={styles.column}>
 					<Button
 						mode="contained"
-						icon="favorite"
+						icon="alarm"
 						onPress={() => this.props.navigation.navigate('HoursList')}
 						style={styles.button}
 					>
