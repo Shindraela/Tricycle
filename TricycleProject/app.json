@@ -16,6 +16,11 @@
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
+		"buildpacks": [
+			{
+				"url": "heroku/nodejs"
+			}
+		],
 		"assetBundlePatterns": [ "**/*" ],
 		"ios": {
 			"supportsTablet": true,
