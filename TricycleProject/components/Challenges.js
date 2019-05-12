@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Headline, Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listChallenges } from '../reducer';
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12
 	},
 	headline: {
-		fontSize: 18
+		fontSize: 16
 	},
 	card: {
 		backgroundColor: '#fff',
@@ -79,9 +79,11 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: 170,
-		height: 170,
-		margin: 10
+		height: Dimensions.get('window').width / 2,
+		width: '47%',
+		margin: 5
+		// width: 170,
+		// height: 170
 	},
 	infoContent: {
 		flex: 1,
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
 	text: {
 		textAlign: 'center',
 		color: '#ffffff',
-		fontSize: 20,
+		fontSize: 18,
 		margin: 15
 	}
 });

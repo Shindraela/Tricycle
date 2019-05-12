@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { listCategories } from '../reducer';
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12
 	},
 	headline: {
-		fontSize: 18
+		fontSize: 16
 	},
 	card: {
 		backgroundColor: '#fff',
@@ -71,9 +71,11 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: 170,
-		height: 170,
-		margin: 10
+		height: Dimensions.get('window').width / 2,
+		width: '47%',
+		margin: 5
+		// width: 170,
+		// height: 170
 	},
 	text: {
 		textAlign: 'center',
