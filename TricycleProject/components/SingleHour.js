@@ -351,5 +351,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleHour);
-
-// export default withTheme(SingleTips);

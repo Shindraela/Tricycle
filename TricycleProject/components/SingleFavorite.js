@@ -122,7 +122,6 @@ class SingleFavorite extends React.Component {
 
 	render() {
 		const { spots } = this.props;
-		// console.log('spots :', spots);
 
 		if (spots) {
 			return (

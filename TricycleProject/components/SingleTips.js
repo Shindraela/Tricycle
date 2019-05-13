@@ -64,5 +64,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTips);
-
-// export default withTheme(SingleTips);
