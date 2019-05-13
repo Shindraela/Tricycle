@@ -127,5 +127,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChallengesList);
-
-// export default withTheme(TipsList);

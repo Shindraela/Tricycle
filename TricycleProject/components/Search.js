@@ -64,7 +64,6 @@ class Search extends React.Component {
 					isLoading: false,
 					markers: responseJson.records
 				});
-				// console.log('responseJson.records :', responseJson.records);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -125,8 +124,6 @@ class Search extends React.Component {
 										latitude: marker.fields.xy[0],
 										longitude: marker.fields.xy[1]
 									};
-
-									const metadata = `Tenue: ${marker.fields.jours_de_tenue}`;
 
 									return (
 										<MapView.Marker
