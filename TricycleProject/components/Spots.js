@@ -62,7 +62,6 @@ class Spots extends React.Component {
 					isLoading: false,
 					markers: responseJson.records
 				});
-				// console.log('responseJson.records :', responseJson.records);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -99,12 +98,6 @@ class Spots extends React.Component {
 								latitudeDelta: 0.0922,
 								longitudeDelta: 0.0421
 							}}
-							// region={{
-							// 	latitude: this.state.location.coords.latitude,
-							// 	longitude: this.state.location.coords.longitude,
-							// 	latitudeDelta: 0.1,
-							// 	longitudeDelta: 0.1
-							// }}
 						>
 							{this.state.isLoading ? null : (
 								this.state.markers.map((marker, index) => {
@@ -112,8 +105,6 @@ class Spots extends React.Component {
 										latitude: marker.fields.xy[0],
 										longitude: marker.fields.xy[1]
 									};
-
-									const metadata = `Tenue: ${marker.fields.jours_de_tenue}`;
 
 									return (
 										<MapView.Marker
